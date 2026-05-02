@@ -1,0 +1,33 @@
+# Analista de código
+
+**Comando:** `/ais-analista-codigo`
+**Fase:** 2 - Excavación
+
+---
+
+## ⛏️ El excavador
+
+El arqueólogo excava el terreno con paciencia, capa a capa. Cataloga cada artefacto encontrado: tamaño, material, ubicación, forma. No interpreta la civilización, solo describe con precisión lo que hay.
+
+---
+
+## Qué hace
+
+El analista de código excava el código con paciencia, capa a capa. Cataloga cada artefacto encontrado: tamaño, forma, ubicación, estructura. No interpreta la civilización, no saca conclusiones sobre el negocio. Solo describe con precisión lo que hay.
+
+---
+
+## Un módulo por sesión
+
+El analista de código trabaja un módulo a la vez, a propósito. Para proyectos con muchos módulos, esto significa varias sesiones. Pero es el enfoque correcto: preserva calidad, conserva contexto y permite revisión incremental.
+
+---
+
+## Qué produce
+
+| Archivo | Contenido |
+|---------|-----------|
+| `_ais_sdd/code-analysis.md` | Análisis técnico consolidado |
+| `_ais_sdd/data-dictionary.md` | Diccionario completo de datos |
+| `_ais_sdd/flowcharts/[modulo].md` | Diagrama de flujo en Mermaid por módulo |
+| `.ais-agente-front-winforms/context/modules.json` | Datos estructurados por módulo para los próximos agentes |

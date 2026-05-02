@@ -1,0 +1,96 @@
+site_name: AIS Agente Front WinForms
+site_url: https://achiong-angia.github.io/ais-agente-sfz/
+site_description: Agentes de IA para desarrollo y especificación del cliente WinForms (capa presentación).
+site_author: tz-angia
+repo_url: https://github.com/achiong-angia/ais-agente-sfz
+repo_name: achiong-angia/ais-agente-sfz
+edit_uri: edit/main/docs/
+copyright: AIS Agente Front WinForms — tz-angia
+
+theme:
+  name: material
+  language: es
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Cambiar a modo claro
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Cambiar a modo oscuro
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+    - content.tooltips
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/magnify
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search:
+      lang:
+        - es
+
+nav:
+  - Inicio: index.md
+  - Por qué AIS Agente Front WinForms: por-que-ais-agente-front-winforms.md
+  - Convivencia de paquetes (front/backend): convivencia-paquetes-agentes.md
+  - Instalación: instalacion.md
+  - Cómo usar: uso.md
+  - CLI: cli.md
+  - Configuración: configuracion.md
+  - Motores compatibles: engines.md
+  - Pipeline de análisis: pipeline.md
+  - Insumos para librerías (DLL): librerias-insumos-analisis.md
+  - Escala de confianza: escala-confianza.md
+  - Agentes:
+    - Visión general: agentes/index.md
+    - Guía con analogías: agentes/guia-analogias-agentes.md
+    - Orquestador: agentes/orquestador.md
+    - Inventariador WinForms: agentes/inventariador-winforms.md
+    - Analista de código: agentes/analista-codigo.md
+    - Analista de reglas de negocio: agentes/analista-reglas-negocio.md
+    - Arquitecto de sistema: agentes/arquitecto-sistema.md
+    - Redactor de especificaciones: agentes/redactor-especificaciones.md
+    - Revisor de especificaciones: agentes/revisor-especificaciones.md
+    - Documentador UI: agentes/documentador-ui.md
+    - Maestro de datos: agentes/maestro-datos.md
+    - Sistema de diseño: agentes/sistema-diseno.md
+  - Salidas generadas: salidas/index.md
+  - Desarrollo con especificaciones: desarrollo-con-especificaciones.md
+  - Contribuir: contribuir.md

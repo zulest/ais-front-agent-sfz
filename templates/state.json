@@ -1,0 +1,22 @@
+{
+  "version": "{{VERSION}}",
+  "product_id": "ais-agente-front-winforms",
+  "agent_domain": "client-front",
+  "target_stack": "winforms",
+  "project": "",
+  "user_name": "",
+  "chat_language": "es",
+  "doc_language": "es",
+  "answer_mode": "chat",
+  "doc_level": "completo",
+  "output_folder": "_ais_sdd",
+  "library_source_roots": [],
+  "decompiled_roots": [],
+  "phase": null,
+  "completed": [],
+  "pending": ["reconocimiento", "excavacion", "interpretacion", "generacion", "revision"],
+  "checkpoints": {},
+  "engines": [],
+  "agents": [],
+  "created_files": []
+}

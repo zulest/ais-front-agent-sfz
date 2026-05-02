@@ -1,0 +1,10 @@
+# AIS Agente Front WinForms — cliente WinForms
+
+Escribí **`/sfz-front`** o **`sfz-front`** para iniciar el orquestador del **cliente** (`agent_domain: client-front`). **No uses `/sfz` ni `sfz`** (otro paquete AIS, p. ej. backend).
+
+Cuando el usuario escriba "/sfz-front" o "sfz-front" solo en un mensaje:
+1. Activa el skill "ais-agente-front-winforms" en .agents/skills/ais-agente-front-winforms/SKILL.md
+2. Lee el SKILL.md completo y sigue exactamente las instrucciones
+
+Regla absoluta: nunca borres, modifiques ni sobrescribas archivos preexistentes del proyecto legado.
+Este paquete escribe SOLO en .ais-agente-front-winforms/ y _ais_sdd/.

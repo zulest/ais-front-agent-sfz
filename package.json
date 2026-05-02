@@ -1,0 +1,55 @@
+{
+  "name": "ais-agente-front-winforms",
+  "version": "1.2.14",
+  "description": "AIS Agente Front WinForms — agentes de IA para desarrollo y especificación del cliente WinForms (capa presentación, agent_domain client-front). CLI: npx sfz-front.",
+  "bin": {
+    "sfz-front": "bin/sfz.js",
+    "ais-agente-front-winforms": "bin/sfz.js"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "keywords": [
+    "winforms",
+    "cliente",
+    "presentacion",
+    "capa-front",
+    "agentes",
+    "ia",
+    "especificaciones",
+    "legado",
+    "sfz-front",
+    "ingenieria-inversa"
+  ],
+  "files": [
+    "agents/",
+    "bin/",
+    "lib/",
+    "templates/",
+    "README.md",
+    "LICENSE"
+  ],
+  "author": "tz-angia",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/achiong-angia/ais-agente-sfz.git"
+  },
+  "homepage": "https://achiong-angia.github.io/ais-agente-sfz/",
+  "bugs": {
+    "url": "https://github.com/achiong-angia/ais-agente-sfz/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "inquirer": "^9.2.0",
+    "ora": "^7.0.1",
+    "semver": "^7.6.0"
+  }
+}

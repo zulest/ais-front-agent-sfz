@@ -1,0 +1,35 @@
+# AIS Agente Front WinForms — Configuración del proyecto
+# Este archivo es administrado por el instalador. Para personalizaciones, edita config.user.toml
+
+[project]
+name = ""
+version = "1.0.0"
+
+[user]
+name = ""
+chat_language = "es"
+doc_language = "es"
+
+[output]
+folder = "_ais_sdd"
+
+[agents]
+installed = [
+  "ais-agente-front-winforms",
+  "ais-inventariador-winforms",
+  "ais-analista-codigo",
+  "ais-analista-reglas-negocio",
+  "ais-arquitecto-sistema",
+  "ais-redactor-especificaciones",
+  "ais-revisor-especificaciones",
+  "ais-documentador-ui",
+  "ais-data-master",
+  "ais-design-system"
+]
+
+[engines]
+installed = []
+
+[analysis]
+answer_mode = "chat"
+doc_level = "completo"
