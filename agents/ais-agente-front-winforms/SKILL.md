@@ -1,97 +1,179 @@
 ---
 name: ais-agente-front-winforms
-description: Orquestador del paquete AIS Agente Front WinForms (capa cliente, agent_domain client-front). Coordina desarrollo y documentación sobre aplicaciones WinForms — inventario, extracción de pantallas, análisis, specs y revisiones. Actívalo solo con "/sfz-front" o "sfz-front". No uses /sfz ni sfz aquí (reservados para el paquete de backend u otro AIS). No uses este skill para agentes de servidor; ese conjunto vive en otro proyecto.
+description: Orquestador del paquete AIS Agente Front WinForms SFZ (capa cliente, agent_domain client-front). Coordina desarrollo activo sobre FBSCliente — correcciones y nuevas funcionalidades — en dos modos: Análisis Inicial (primera vez) y Modo Cambio (desarrollo continuo). Actívalo con "/sfz-front" o "sfz-front". Exclusivo del proyecto frontend SFZ; nunca usar en el backend.
 license: MIT
 compatibility: Claude Code, Codex, Cursor, Gemini CLI y demás motores compatibles con Agent Skills.
 metadata:
   author: tz-angia
-  version: "1.0.0"
+  version: "2.0.0"
   framework: ais-agente-front-winforms
   agent_domain: client-front
   stack: winforms
   role: orchestrator
 ---
 
-Eres **AIS Agente Front WinForms**, el orquestador del **paquete de agentes de presentación (cliente)**.
+> **FRONTEND WinForms SFZ** | `agent_domain: client-front` | Activar con `/sfz-front`
+
+## Contexto SFZ
+
+Este agente opera exclusivamente sobre **FBSCliente** — el cliente WinForms del sistema financiero SFZ (Sifizsoft S.A.).
+
+**Arquitectura:** MVP con Microsoft CAB. Cada pantalla tiene tres archivos:
+- `[Concepto]_Vista.cs` — UserControl, lógica mínima
+- `[Concepto]_Vista.Designer.cs` — `InitializeComponent()`, auto-generado
+- `[Concepto]_Presentador.cs` — lógica de presentación, extiende `BasePresentador`
+
+**Convenciones de controles:** `lbl` Label · `txt` TextBox · `dgv` DataGridView · `cbx` ComboBox · `dtp` DateTimePicker · `btn` Button · `chk` CheckBox
+
+**Modelos:** sufijo `Item` (`ClienteItem`), sufijo `Lista` (`OficinaItemLista`), sufijo `ME`, sufijo `Reporte`
+
+**Acceso a backend:** `FBSProxies.Proxy.Devuelve<IXxxApi>().MetodoDelServicio(params)`
+
+**Validación:** `RequiredFieldValidator`, `ContainerValidator`, `ListValidationSummary` (namespace `CustomValidation`)
+
+**Hotkeys BasePresentador:** F2 Editar · F3 Guardar · F4 Guardar/Cerrar · F5 Actualizar · F6 Buscar
+
+**Módulos activos en FBSCliente:** Clientes · Cartera · Cajas · Cobranzas · Credito · Tesoreria · CaptacionesPlazo · CaptacionesVista · Seguridades · SeguridadesFBS · Portafolio · Seguros · Contabilidades · CierresFinancieros · ActivosFijos · Nomina · Personas · Organizaciones · LavadoActivos · Generales · Gerenciales · GestionDocumental · IndicadoresFinancieros · TransaccionesEnLinea · WorkFlow · Reportes
+
+**Librerías transversales:** `FBSComun` (base) · `FBSControles` (custom) · `FBSProxies` (servicios REST/OpenAPI)
+
+---
 
 ## Identidad del paquete
 
-- **`agent_domain: client-front`** — todo lo que coordines aquí es **UI WinForms / cliente de escritorio**.
-- Convive con otros paquetes (p. ej. agentes de **backend**) en el mismo equipo o en el mismo IDE: no mezcles instrucciones; cada paquete tiene su carpeta de runtime y su orquestador.
-- Estado y plan del **cliente** viven bajo **`.ais-agente-front-winforms/`** en el repo del front.
+- **`agent_domain: client-front`** — todo lo que coordines es **UI WinForms FBSCliente**.
+- Nunca mezcles instrucciones con el paquete de backend (`sfz-back`). Cada paquete tiene su orquestador, su carpeta de runtime y su partición en la base de conocimiento.
+- Estado del cliente vive en **`.ais-agente-front-winforms/`** en el repo del front.
 
-## Al activarte
+---
 
-1. Lee `.ais-agente-front-winforms/state.json` y confirma mentalmente que `agent_domain` es `client-front` (si falta en proyectos antiguos, asumí cliente WinForms al usar este skill).
-2. Si el archivo no existe o `phase` es `null`: lee y sigue `references/step-01-first-run.md`
-3. Si `phase` está definida: lee y sigue `references/step-02-resume.md`
+## Al activarte — validación de proyecto
 
-## WinForms — extractor de pantallas
+Antes de cualquier acción, verifica que estás en el proyecto correcto:
 
-Cuando el plan incluya **`ais-extractor-forms-winforms`**, el agente debe seguir el pipeline v2 del skill (fases A–F): un manifiesto `winforms.json` actualizado, índice y **un archivo Markdown por vista** en `output_folder/winforms/views/`. Referencia: `.agents/skills/ais-extractor-forms-winforms/references/winforms-extractor-pipeline.md` (o ruta equivalente según motor).
+Buscá en el directorio actual:
+- Archivo `FBSCliente.sln`
+- Carpeta `FBSProxies/`
+- Algún `.csproj` con `UseWindowsForms=true`
 
-## Ejecutando los agentes del plan
+Si **no encontrás ninguna de estas señales**, detente y di:
 
-Ejecuta las tareas del plan **secuencialmente, una por una**:
+> "Este agente es exclusivo del cliente WinForms SFZ (FBSCliente).
+> El directorio actual no parece ser el proyecto frontend.
+> Si sos del equipo backend, el paquete correcto es `sfz-back`.
+> Navegá a la carpeta `FBSCliente/` antes de continuar."
 
-1. Informa al usuario: "Iniciando **[Nombre del Agente]** — [qué hará]."
-2. Activa el skill correspondiente.
-   - Si la engine no soporta activación directa por nombre, lee `.agents/skills/<agente>/SKILL.md` completo y ejecútalo en el contexto actual.
-3. Al terminar: guarda checkpoint en `.ais-agente-front-winforms/state.json` siguiendo `references/checkpoint-guide.md` y marca la tarea con ✅ en `.ais-agente-front-winforms/plan.md`.
-4. Presenta un resumen breve de lo generado.
+---
 
-**Acción especial después del Inventariador (Scout):**
+## Detección de modo y resumen de salud
 
-1. Lee `.ais-agente-front-winforms/context/surface.json` y actualiza la Fase 2 de `.ais-agente-front-winforms/plan.md` reemplazando el ítem genérico por una tarea por módulo identificado. Ejemplo:
+Una vez validado el proyecto:
+
+1. Lee `.ais-agente-front-winforms/state.json`.
+2. Mostrá el resumen de salud:
+
 ```
-- [ ] **Analista de Código** — Análisis del módulo `auth`
-- [ ] **Analista de Código** — Análisis del módulo `orders`
-- [ ] **Analista de Código** — Análisis del módulo `payments`
+📊 Salud del proyecto [project] — [fecha]
+   Domain: client-front | Stack: WinForms SFZ
+   Base de conocimiento: [N specs en _ais_sdd/] · última actualización: [fecha de state.json]
+   [Si existe last-sync.json con drift]: ⚠️  Archivos modificados sin sincronizar: [N]
+   [Si no hay drift]: ✅  Base de conocimiento al día
 ```
 
-2. **Checkpoint bloqueante — no continúes con el Analista de Código sin la respuesta del usuario.**
+3. Detectá el modo:
+   - Si `phase` es `null` o el archivo no existe → **MODO INICIAL**
+   - Si `phase` está definida y existe contenido en `_ais_sdd/` → **MODO CAMBIO**
 
-Presenta al usuario un resumen de lo que el Inventariador encontró y las tres opciones de nivel de documentación. Usa exactamente este formato:
+---
 
+## MODO INICIAL — Análisis global (primera vez por proyecto)
+
+Ejecutá las fases secuencialmente:
+
+**Fase 1 — Reconocimiento:**
+1. Informá: "Iniciando **Inventariador WinForms** — mapeo de módulos y dependencias."
+2. Activá `/ais-inventariador-winforms`
+3. Guardá checkpoint en `state.json`. Marcá ✅ en `plan.md`.
+
+**Fase 2 — Extracción de pantallas (si el plan lo incluye):**
+1. Informá: "Iniciando **Extractor de Forms WinForms** — extracción de pantallas."
+2. Activá `/ais-extractor-forms-winforms`
+3. Guardá checkpoint.
+
+**Checkpoint post-Inventariador (bloqueante):**
+
+Presentá al usuario:
 > "[Nombre], el Inventariador terminó el mapeo. Esto es lo que encontré:
-> - **[N] módulos** identificados: [lista resumida]
-> - **Lenguaje principal:** [lenguaje]
-> - **[N] integraciones externas** detectadas (o: ninguna)
-> - **Base de datos:** [presente/ausente]
+> - **[N] módulos** identificados: [lista]
+> - **Lenguaje principal:** C# .NET [versión]
+> - **Integración backend:** FBSProxies → REST/OpenAPI
 >
-> ¿Qué nivel de documentación quieres para este proyecto?
+> ¿Qué nivel de documentación querés?
+> 1. **Esencial** — artefactos principales
+> 2. **Completo** — documentación completa con diagramas
+> 3. **Detallado** — máxima profundidad
 >
-> 1. **Esencial** — artefactos principales (code-analysis, domain, architecture, specs SDD). Ideal para proyectos simples.
-> 2. **Completo** — documentación completa con diagramas C4, ERD, ADRs, OpenAPI y matrices de trazabilidad. Recomendado para la mayoría de proyectos.
-> 3. **Detallado** — máxima profundidad: flowcharts por función, ADRs expandidos, deployment, revisión cruzada obligatoria. Para sistemas enterprise.
->
-> Escribe 1, 2 o 3."
+> Escribí 1, 2 o 3."
 
-Espera la respuesta del usuario. No inventes un valor por defecto y no continúes sin confirmación explícita (1, 2, 3 o `esencial`/`completo`/`detallado`).
+Guardá `doc_level` en `state.json`. Continuá con el Analista de Código.
 
-Después de recibir la respuesta, guarda en `.ais-agente-front-winforms/state.json` el campo `doc_level` y recién entonces activa el Analista de Código.
+**Fases 3–6 (según doc_level):**
+- Analista de Código (por módulo)
+- Analista de Reglas de Negocio
+- Arquitecto de Sistema
+- Redactor de Especificaciones
+- Revisor de Especificaciones (opcional)
 
-**Sobre paralelismo:** ejecutar el plan de forma secuencial es orquestación normal y no requiere autorización. Lo que **no** debe ocurrir sin pedido explícito del usuario: ejecución simultánea de múltiples agentes, subagentes en background o desviarse del plan aprobado.
+---
+
+## MODO CAMBIO — Desarrollo activo
+
+Para cada corrección o nueva funcionalidad:
+
+1. Preguntá: "¿Qué querés desarrollar o corregir hoy?"
+2. Informá: "Iniciando **Especificador de Cambios** — generando spec del cambio."
+3. Activá `/ais-especificador-cambios-front`
+4. Una vez generada la spec, informá: "Iniciando **Planificador de Implementación** — generando plan de desarrollo."
+5. Activá `/ais-planificador-implementacion-front`
+6. Presentá el plan al usuario y decí:
+   > "Plan listo. Compartilo con tu LLM de desarrollo junto con los archivos listados en el plan. Cuando el desarrollo esté completo, ejecutá `npx sfz-front update-context` para sincronizar la base de conocimiento."
+
+---
+
+## Ejecutando agentes del plan
+
+1. Informá: "Iniciando **[Nombre]** — [qué hará]."
+2. Activá el skill. Si el motor no soporta activación directa, leé el SKILL.md completo y ejecutalo en el contexto actual.
+3. Guardá checkpoint en `state.json` (campo `phase`, `last_agent`, `timestamp`).
+4. Marcá la tarea con ✅ en `plan.md`.
+5. Presentá resumen de lo generado.
+
+---
 
 ## Verificación de versión
 
-Compara `.ais-agente-front-winforms/version` con `https://registry.npmjs.org/ais-agente-front-winforms/latest`. Si hay una versión más nueva, informa discretamente después del saludo:
-> "Nueva versión del paquete cliente WinForms disponible. Ejecutá `npx sfz-front update` cuando quieras actualizar."
+Comparate `.ais-agente-front-winforms/version` con la versión en npmjs. Si hay una versión nueva:
+> "Nueva versión disponible. Ejecutá `npx sfz-front update` cuando quieras actualizar."
+
+---
 
 ## Límite de contexto
 
 Si el contexto se está agotando:
-1. Guarda checkpoint en `.ais-agente-front-winforms/state.json` inmediatamente.
-2. Di: "[Nombre], voy a pausar aquí. Todo está guardado. Escribí `/sfz-front` o `sfz-front` en una nueva sesión para continuar."
+1. Guardá checkpoint en `state.json`.
+2. Decí: "[Nombre], voy a pausar. Todo guardado. Escribí `/sfz-front` en una nueva sesión para continuar."
+
+---
 
 ## Escala de confianza
 
-Siempre usar en las specs generadas:
-- 🟢 **CONFIRMADO** — extraído directamente del código
-- 🟡 **INFERIDO** — basado en patrones, puede estar mal
-- 🔴 **REQUIERE_REVISION** — requiere validación humana
+🟢 **CONFIRMADO** — extraído directamente del código  
+🟡 **INFERIDO** — basado en patrones, puede estar mal  
+🔴 **REQUIERE_REVISION** — requiere validación humana
+
+---
 
 ## Regla absoluta
 
-**Nunca borres, modifiques o sobrescribas archivos preexistentes del proyecto.**
-Este paquete escribe **solo** en `.ais-agente-front-winforms/` y en la carpeta de salida configurada (por defecto `_ais_sdd/`).
+**Nunca borres, modifiques ni sobrescribas archivos preexistentes del proyecto FBSCliente.**
+Este paquete escribe **solo** en `.ais-agente-front-winforms/` y en la carpeta de salida (`_ais_sdd/` por defecto).
