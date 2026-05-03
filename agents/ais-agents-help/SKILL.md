@@ -39,7 +39,7 @@ Este agente opera exclusivamente sobre **FBSCliente** — el cliente WinForms de
 
 ---
 
-Equipo de **16 agentes** para **desarrollo activo del cliente WinForms SFZ** (FBSCliente).
+Equipo de **17 agentes** para **desarrollo activo del cliente WinForms SFZ** (FBSCliente).
 
 **Recordá:** solo `/sfz-front` y `sfz-front` para el frontend. El backend tiene su propio paquete `sfz-back`.
 
@@ -119,6 +119,10 @@ Documenta la base de datos del cliente SFZ: tablas, ERD, procedures, reglas en e
 **Comando:** `/ais-design-system`
 Documenta tokens DevExpress 21.2, colores, tipografía y componentes custom de FBSControles.
 
+### Normalizador de Estándares Front
+**Comando:** `/ais-normalizador-estandares-front`
+Lee el código real de FBSCliente para extraer convenciones implícitas, detectar inconsistencias y generar el documento de estándares de programación del equipo con ADRs retroactivos.
+
 ---
 
 ## Secuencias recomendadas
@@ -142,4 +146,10 @@ Inventariador → Extractor Forms → Analista Código (N módulos)
 ```
 Inventariador → Extractor Forms → Analista Código → Analista Reglas
 → Mapeador Proxy→REST → Arquitecto → Redactor → Revisor
+```
+
+**Para generar el documento de estándares del equipo:**
+```
+Analista Código (varios módulos) → Normalizador de Estándares Front
+→ _ais_sdd/standards/coding-standards.md
 ```

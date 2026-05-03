@@ -1,0 +1,85 @@
+# AIS Agente SFZ + Superpowers (Windsurf)
+
+## Activar el framework en este repo
+
+Escribe **`/sfz`** o **`sfz`** en el chat para el orquestador. Los skills instalados viven en `.agents/skills/ais-*/` (y `.claude/skills/` si aplica).
+
+---
+
+# Superpowers v5.0.7 — Windsurf Rules
+
+## You Have Superpowers
+
+Skills are stored in `.windsurf/skills/superpowers/`. To use a skill, read the file `.windsurf/skills/superpowers/<skill-name>/SKILL.md` and follow its instructions exactly.
+
+## Available Skills
+
+| Skill | File |
+|-------|------|
+| brainstorming | `.windsurf/skills/superpowers/brainstorming/SKILL.md` |
+| writing-plans | `.windsurf/skills/superpowers/writing-plans/SKILL.md` |
+| executing-plans | `.windsurf/skills/superpowers/executing-plans/SKILL.md` |
+| subagent-driven-development | `.windsurf/skills/superpowers/subagent-driven-development/SKILL.md` |
+| systematic-debugging | `.windsurf/skills/superpowers/systematic-debugging/SKILL.md` |
+| test-driven-development | `.windsurf/skills/superpowers/test-driven-development/SKILL.md` |
+| requesting-code-review | `.windsurf/skills/superpowers/requesting-code-review/SKILL.md` |
+| receiving-code-review | `.windsurf/skills/superpowers/receiving-code-review/SKILL.md` |
+| dispatching-parallel-agents | `.windsurf/skills/superpowers/dispatching-parallel-agents/SKILL.md` |
+| finishing-a-development-branch | `.windsurf/skills/superpowers/finishing-a-development-branch/SKILL.md` |
+| verification-before-completion | `.windsurf/skills/superpowers/verification-before-completion/SKILL.md` |
+| using-git-worktrees | `.windsurf/skills/superpowers/using-git-worktrees/SKILL.md` |
+| using-superpowers | `.windsurf/skills/superpowers/using-superpowers/SKILL.md` |
+| playwright-cli | `.windsurf/skills/superpowers/playwright-cli/SKILL.md` |
+| writing-skills | `.windsurf/skills/superpowers/writing-skills/SKILL.md` |
+
+## The Rule — MANDATORY
+
+**Read and follow the relevant skill BEFORE any response or action.** Even a 1% chance a skill might apply means you MUST read it first.
+
+IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
+
+## How to Invoke a Skill in Windsurf
+
+Since Windsurf has no `Skill` tool, invoke a skill by reading its file:
+
+```
+Read: .windsurf/skills/superpowers/<skill-name>/SKILL.md
+```
+
+Then follow the skill's instructions exactly. Announce what you're doing:
+> "Using [skill-name] to [purpose]"
+
+## When to Use Each Skill
+
+- **Building something new** → `brainstorming` first, then `writing-plans`
+- **Starting implementation** → `subagent-driven-development` or `executing-plans`
+- **Any bug or failure** → `systematic-debugging`
+- **Writing any code** → `test-driven-development`
+- **Before claiming done** → `verification-before-completion`
+- **Submitting work** → `requesting-code-review`
+- **Got review feedback** → `receiving-code-review`
+- **Multiple independent tasks** → `dispatching-parallel-agents`
+- **Starting feature work** → `using-git-worktrees`
+- **All tasks complete** → `finishing-a-development-branch`
+- **Browser automation** → `playwright-cli`
+
+## Red Flags — You Are Rationalizing
+
+| Thought | Reality |
+|---------|---------|
+| "This is just a simple question" | Questions are tasks. Check for skills. |
+| "I need more context first" | Skill check comes BEFORE clarifying questions. |
+| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
+| "This doesn't need a formal skill" | If a skill exists, use it. |
+| "The skill is overkill" | Simple things become complex. Use it. |
+
+## Skill Priority
+
+1. **Process skills first** (brainstorming, systematic-debugging) — determine HOW to approach
+2. **Implementation skills second** (test-driven-development, etc.) — guide execution
+
+## Instruction Priority
+
+1. User's explicit instructions (`.windsurfrules`, direct requests) — highest
+2. Superpowers skills — override default behavior
+3. Default Windsurf behavior — lowest

@@ -50,7 +50,7 @@ Classifies installed files as `intact | modified | missing` by comparing against
 **Modo Cambio — Desarrollo activo (required, always installed):**
 `ais-especificador-cambios-front`, `ais-planificador-implementacion-front`, `ais-actualizador-contexto-front`
 
-**Optional:** `ais-revisor-especificaciones`, `ais-documentador-ui`, `ais-extractor-forms-winforms`, `ais-mapeador-proxy-rest`, `ais-data-master`, `ais-design-system`, `ais-agents-help`
+**Optional:** `ais-revisor-especificaciones`, `ais-documentador-ui`, `ais-extractor-forms-winforms`, `ais-mapeador-proxy-rest`, `ais-data-master`, `ais-design-system`, `ais-agents-help`, `ais-normalizador-estandares-front`
 
 Each agent lives in `agents/<id>/SKILL.md` plus optional `references/` files.
 
