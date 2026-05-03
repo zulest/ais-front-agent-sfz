@@ -1,6 +1,6 @@
 ---
 name: ais-extractor-forms-winforms
-description: Extrae de forma determinista la estructura de formularios WinForms (Designer.cs + code-behind) — controles, etiquetas ↔ campos, columnas de DataGridView, validación consolidada y notas de encoding. Genera un manifiesto JSON y un Markdown por vista. Usar tras el inventario para desarrollo, mantenimiento o especificación fina de pantalla en el cliente.
+description: Extrae de forma determinista la estructura de formularios WinForms SFZ (Designer.cs + code-behind) — controles con convenciones lbl/txt/dgv/cbx, etiquetas, DataGridView, validadores CustomValidation y encoding. Genera manifiesto JSON y un Markdown por vista. Frontend WinForms FBSCliente exclusivamente.
 license: MIT
 compatibility: Claude Code, Codex, Cursor, Gemini CLI y demás motores compatibles con Agent Skills.
 metadata:
@@ -10,6 +10,33 @@ metadata:
   agent_domain: client-front
   stack: winforms
   phase: extraccion
+---
+
+> **FRONTEND WinForms SFZ** | `agent_domain: client-front` | Activar con `/sfz-front`
+
+## Contexto SFZ
+
+Este agente opera exclusivamente sobre **FBSCliente** — el cliente WinForms del sistema financiero SFZ (Sifizsoft S.A.).
+
+**Arquitectura:** MVP con Microsoft CAB. Cada pantalla tiene tres archivos:
+- `[Concepto]_Vista.cs` — UserControl, lógica mínima
+- `[Concepto]_Vista.Designer.cs` — `InitializeComponent()`, auto-generado
+- `[Concepto]_Presentador.cs` — lógica de presentación, extiende `BasePresentador`
+
+**Convenciones de controles:** `lbl` Label · `txt` TextBox · `dgv` DataGridView · `cbx` ComboBox · `dtp` DateTimePicker · `btn` Button · `chk` CheckBox
+
+**Modelos:** sufijo `Item` (`ClienteItem`), sufijo `Lista` (`OficinaItemLista`), sufijo `ME`, sufijo `Reporte`
+
+**Acceso a backend:** `FBSProxies.Proxy.Devuelve<IXxxApi>().MetodoDelServicio(params)`
+
+**Validación:** `RequiredFieldValidator`, `ContainerValidator`, `ListValidationSummary` (namespace `CustomValidation`)
+
+**Hotkeys BasePresentador:** F2 Editar · F3 Guardar · F4 Guardar/Cerrar · F5 Actualizar · F6 Buscar
+
+**Módulos activos en FBSCliente:** Clientes · Cartera · Cajas · Cobranzas · Credito · Tesoreria · CaptacionesPlazo · CaptacionesVista · Seguridades · SeguridadesFBS · Portafolio · Seguros · Contabilidades · CierresFinancieros · ActivosFijos · Nomina · Personas · Organizaciones · LavadoActivos · Generales · Gerenciales · GestionDocumental · IndicadoresFinancieros · TransaccionesEnLinea · WorkFlow · Reportes
+
+**Librerías transversales:** `FBSComun` (base) · `FBSControles` (custom) · `FBSProxies` (servicios REST/OpenAPI)
+
 ---
 
 Eres el **Extractor de Forms WinForms (v2)**. Tu misión es extraer información **determinista** desde `*.Designer.cs`, el `.cs` hermano (code-behind / partial) y **solo** enlaces de validación en partials o presentadores cuando exista un **patrón estable y documentado abajo**. No inventes nada.

@@ -1,6 +1,6 @@
----
+﻿---
 name: ais-mapeador-proxy-rest
-description: Mapea el contrato Proxy (WinForms) al contrato REST (OpenAPI/Swagger) para documentar y alinear el cliente con APIs — útil en desarrollo WinForms y en proyectos que también migren o expongan contratos web.
+description: Mapea el contrato FBSProxies (cliente WinForms SFZ) al contrato REST/OpenAPI del backend — trazabilidad IXxxApi ↔ endpoints con confianza 🟢🟡🔴. Exclusivo del frontend FBSCliente.
 license: MIT
 compatibility: Claude Code, Codex, Cursor, Gemini CLI y demás motores compatibles con Agent Skills.
 metadata:
@@ -12,6 +12,32 @@ metadata:
   phase: interpretacion
 ---
 
+> **FRONTEND WinForms SFZ** | `agent_domain: client-front` | Activar con `/sfz-front`
+
+## Contexto SFZ
+
+Este agente opera exclusivamente sobre **FBSCliente** — el cliente WinForms del sistema financiero SFZ (Sifizsoft S.A.).
+
+**Arquitectura:** MVP con Microsoft CAB. Cada pantalla tiene tres archivos:
+- `[Concepto]_Vista.cs` — UserControl, lógica mínima
+- `[Concepto]_Vista.Designer.cs` — `InitializeComponent()`, auto-generado
+- `[Concepto]_Presentador.cs` — lógica de presentación, extiende `BasePresentador`
+
+**Convenciones de controles:** `lbl` Label · `txt` TextBox · `dgv` DataGridView · `cbx` ComboBox · `dtp` DateTimePicker · `btn` Button · `chk` CheckBox
+
+**Modelos:** sufijo `Item` (`ClienteItem`), sufijo `Lista` (`OficinaItemLista`), sufijo `ME`, sufijo `Reporte`
+
+**Acceso a backend:** `FBSProxies.Proxy.Devuelve<IXxxApi>().MetodoDelServicio(params)`
+
+**Validación:** `RequiredFieldValidator`, `ContainerValidator`, `ListValidationSummary` (namespace `CustomValidation`)
+
+**Hotkeys BasePresentador:** F2 Editar · F3 Guardar · F4 Guardar/Cerrar · F5 Actualizar · F6 Buscar
+
+**Módulos activos en FBSCliente:** Clientes · Cartera · Cajas · Cobranzas · Credito · Tesoreria · CaptacionesPlazo · CaptacionesVista · Seguridades · SeguridadesFBS · Portafolio · Seguros · Contabilidades · CierresFinancieros · ActivosFijos · Nomina · Personas · Organizaciones · LavadoActivos · Generales · Gerenciales · GestionDocumental · IndicadoresFinancieros · TransaccionesEnLinea · WorkFlow · Reportes
+
+**Librerías transversales:** `FBSComun` (base) · `FBSControles` (custom) · `FBSProxies` (servicios REST/OpenAPI)
+
+---
 Eres el **Mapeador Proxy→REST**. Tu misión es construir un mapeo trazable entre:
 
 - Llamadas realizadas vía librerías proxy (contrato cliente actual)

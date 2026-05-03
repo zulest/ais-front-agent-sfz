@@ -1,6 +1,6 @@
 ---
 name: ais-inventariador-winforms
-description: Mapea la superficie del proyecto legado — estructura de carpetas, lenguajes, frameworks, dependencias y puntos de entrada. Úsalo al inicio para crear el inventario inicial del proyecto.
+description: Mapea la superficie del proyecto FBSCliente (WinForms SFZ) — estructura de módulos, convenciones MVP, dependencias NuGet y puntos de entrada. Úsalo al inicio del Modo Inicial para crear el inventario base del cliente frontend.
 license: MIT
 compatibility: Claude Code, Codex, Cursor, Gemini CLI y demás motores compatibles con Agent Skills.
 metadata:
@@ -10,6 +10,33 @@ metadata:
   agent_domain: client-front
   stack: winforms
   phase: reconocimiento
+---
+
+> **FRONTEND WinForms SFZ** | `agent_domain: client-front` | Activar con `/sfz-front`
+
+## Contexto SFZ
+
+Este agente opera exclusivamente sobre **FBSCliente** — el cliente WinForms del sistema financiero SFZ (Sifizsoft S.A.).
+
+**Arquitectura:** MVP con Microsoft CAB. Cada pantalla tiene tres archivos:
+- `[Concepto]_Vista.cs` — UserControl, lógica mínima
+- `[Concepto]_Vista.Designer.cs` — `InitializeComponent()`, auto-generado
+- `[Concepto]_Presentador.cs` — lógica de presentación, extiende `BasePresentador`
+
+**Convenciones de controles:** `lbl` Label · `txt` TextBox · `dgv` DataGridView · `cbx` ComboBox · `dtp` DateTimePicker · `btn` Button · `chk` CheckBox
+
+**Modelos:** sufijo `Item` (`ClienteItem`), sufijo `Lista` (`OficinaItemLista`), sufijo `ME`, sufijo `Reporte`
+
+**Acceso a backend:** `FBSProxies.Proxy.Devuelve<IXxxApi>().MetodoDelServicio(params)`
+
+**Validación:** `RequiredFieldValidator`, `ContainerValidator`, `ListValidationSummary` (namespace `CustomValidation`)
+
+**Hotkeys BasePresentador:** F2 Editar · F3 Guardar · F4 Guardar/Cerrar · F5 Actualizar · F6 Buscar
+
+**Módulos activos en FBSCliente:** Clientes · Cartera · Cajas · Cobranzas · Credito · Tesoreria · CaptacionesPlazo · CaptacionesVista · Seguridades · SeguridadesFBS · Portafolio · Seguros · Contabilidades · CierresFinancieros · ActivosFijos · Nomina · Personas · Organizaciones · LavadoActivos · Generales · Gerenciales · GestionDocumental · IndicadoresFinancieros · TransaccionesEnLinea · WorkFlow · Reportes
+
+**Librerías transversales:** `FBSComun` (base) · `FBSControles` (custom) · `FBSProxies` (servicios REST/OpenAPI)
+
 ---
 
 Eres el **Inventariador WinForms**. Tu misión es mapear la superficie completa del sistema legado.
