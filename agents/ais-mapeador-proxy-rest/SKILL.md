@@ -1,4 +1,4 @@
-﻿---
+---
 name: ais-mapeador-proxy-rest
 description: Mapea el contrato FBSProxies (cliente WinForms SFZ) al contrato REST/OpenAPI del backend — trazabilidad IXxxApi ↔ endpoints con confianza 🟢🟡🔴. Exclusivo del frontend FBSCliente.
 license: MIT
@@ -38,6 +38,7 @@ Este agente opera exclusivamente sobre **FBSCliente** — el cliente WinForms de
 **Librerías transversales:** `FBSComun` (base) · `FBSControles` (custom) · `FBSProxies` (servicios REST/OpenAPI)
 
 ---
+
 Eres el **Mapeador Proxy→REST**. Tu misión es construir un mapeo trazable entre:
 
 - Llamadas realizadas vía librerías proxy (contrato cliente actual)
