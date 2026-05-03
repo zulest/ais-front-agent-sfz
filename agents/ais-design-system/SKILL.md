@@ -1,74 +1,91 @@
 ---
 name: ais-design-system
-description: Extrai e documenta o sistema de design do projeto legado — paleta de cores, tipografia, espaçamentos, tokens e componentes a partir de CSS, arquivos de tema e screenshots. Use quando arquivos de estilo ou screenshots de interface estiverem disponíveis.
+description: Extrae y documenta el sistema de diseño del cliente WinForms SFZ — paleta de colores DevExpress, tipografía, espaciados, tokens de componentes custom en FBSControles y screenshots de pantallas. Exclusivo del frontend FBSCliente.
 license: MIT
-compatibility: Claude Code, Codex, Cursor, Gemini CLI e demais agentes compatíveis com Agent Skills (screenshots requerem suporte a imagens no modelo).
+compatibility: Claude Code, Codex, Cursor, Gemini CLI y demás motores compatibles con Agent Skills (screenshots requieren soporte de imágenes en el modelo).
 metadata:
   author: tz-angia
-  version: "1.0.0"
+  version: "1.1.0"
   framework: ais-agente-front-winforms
   agent_domain: client-front
   stack: winforms
-  phase: qualquer
+  phase: cualquiera
 ---
 
-Você é o Design System. Sua missão é extrair e documentar os tokens de design do projeto.
+> **FRONTEND WinForms SFZ** | `agent_domain: client-front` | Activar con `/sfz-front`
 
-## Antes de começar
+## Contexto SFZ
 
-Leia `.ais-agente-front-winforms/state.json` → campo `output_folder` (padrão: `_ais_sdd`). Use-o como pasta de saída.
+Este agente opera exclusivamente sobre **FBSCliente** — el cliente WinForms del sistema financiero SFZ (Sifizsoft S.A.).
 
-## Fontes de análise (use o que estiver disponível)
+**Arquitectura:** MVP con Microsoft CAB. Cada pantalla tiene tres archivos:
+- `[Concepto]_Vista.cs` — UserControl, lógica mínima
+- `[Concepto]_Vista.Designer.cs` — `InitializeComponent()`, auto-generado
+- `[Concepto]_Presentador.cs` — lógica de presentación, extiende `BasePresentador`
 
-1. CSS/SCSS/LESS — variáveis CSS (`--color-primary`), variáveis Sass (`$color-primary`)
-2. Tailwind CSS — `tailwind.config.js` (tema customizado)
-3. Temas de UI libraries — MUI (`createTheme`), Chakra UI (`extendTheme`), Mantine, Ant Design
-4. styled-components / Emotion — objetos de tema (`ThemeProvider`)
-5. Arquivos de tokens — Style Dictionary, `tokens.json`, `design-tokens.yaml`
-6. Storybook — se existir, analise stories para variantes de componentes
-7. Screenshots — como complemento visual para confirmar tokens
+**Convenciones de controles:** `lbl` Label · `txt` TextBox · `dgv` DataGridView · `cbx` ComboBox · `dtp` DateTimePicker · `btn` Button · `chk` CheckBox
 
-## Processo
+**Modelos:** sufijo `Item` (`ClienteItem`), sufijo `Lista` (`OficinaItemLista`), sufijo `ME`, sufijo `Reporte`
 
-### 1. Paleta de cores
-- Cores primárias, secundárias e de destaque
-- Cores neutras (grays, blacks, whites)
-- Cores de feedback: sucesso, erro, alerta, informação
-- Variações (50–900 ou light/main/dark)
-- Valores em hex/rgb/hsl
+**Acceso a backend:** `FBSProxies.Proxy.Devuelve<IXxxApi>().MetodoDelServicio(params)`
 
-### 2. Tipografia
-- Famílias de fontes com fallbacks
-- Escala de tamanhos (valores em px/rem)
-- Pesos disponíveis
-- Line-height e letter-spacing padrão
-- Hierarquia (h1–h6, body, caption, label, code)
+**Validación:** `RequiredFieldValidator`, `ContainerValidator`, `ListValidationSummary` (namespace `CustomValidation`)
 
-### 3. Espaçamento e layout
-- Escala de espaçamento base
-- Grid: colunas, gutter, largura máxima
-- Breakpoints (sm, md, lg, xl, 2xl em px)
+**Hotkeys BasePresentador:** F2 Editar · F3 Guardar · F4 Guardar/Cerrar · F5 Actualizar · F6 Buscar
 
-### 4. Outros tokens
-- Border-radius (cards, botões, inputs, círculos)
-- Sombras / elevações
-- Z-index escala
-- Transições e easing functions
-- Opacidades semânticas
+**Módulos activos en FBSCliente:** Clientes · Cartera · Cajas · Cobranzas · Credito · Tesoreria · CaptacionesPlazo · CaptacionesVista · Seguridades · SeguridadesFBS · Portafolio · Seguros · Contabilidades · CierresFinancieros · ActivosFijos · Nomina · Personas · Organizaciones · LavadoActivos · Generales · Gerenciales · GestionDocumental · IndicadoresFinancieros · TransaccionesEnLinea · WorkFlow · Reportes
 
-### 5. Componentes
-Se houver biblioteca de componentes própria: liste componentes, variantes e props principais.
+**Librerías transversales:** `FBSComun` (base) · `FBSControles` (custom) · `FBSProxies` (servicios REST/OpenAPI)
 
-## Saída
+---
 
-**Em `_ais_sdd/design-system/`:**
-- `color-palette.md` — paleta completa com valores
+Eres el **Design System**. Tu misión es extraer y documentar los tokens de diseño del cliente WinForms SFZ.
+
+## Antes de empezar
+
+Lee `.ais-agente-front-winforms/state.json` → campo `output_folder` (por defecto: `_ais_sdd`). Úsalo como carpeta de salida.
+
+## Fuentes de análisis SFZ (usa lo que esté disponible)
+
+1. **DevExpress 21.2** — skins, paleta de colores en archivos de configuración (`*.xml`, `*.skin`)
+2. **FBSControles** — componentes custom: propiedades de color, fuente y tamaño definidos en constructores
+3. **FBSComun** — constantes visuales, estilos comunes
+4. **Archivos de recursos** (`*.resx`, `*.Designer.cs` con propiedades de fuente/color)
+5. **Screenshots** — como complemento visual para confirmar tokens
+
+## Proceso
+
+### 1. Paleta de colores
+- Colores primarios, secundarios y de estado (éxito, error, alerta, info)
+- Colores de fondo de formularios, DataGridView, paneles
+- Valores en código de color hex/argb
+
+### 2. Tipografía
+- Fuentes usadas en controles (Label, TextBox, DataGridView header)
+- Tamaños de fuente por tipo de control
+- Negrita/cursiva en contextos específicos
+
+### 3. Componentes custom de FBSControles
+- Lista de controles custom con sus propiedades de diseño
+- Variantes y estados (habilitado, deshabilitado, error)
+
+### 4. Espaciado y layout
+- Padding/margin comunes en TableLayoutPanel y GroupBox
+- Tamaños estándar de formularios y diálogos
+
+### 5. Iconos y recursos gráficos
+- Imágenes en `Resources/` por módulo
+- Íconos de toolbar y menú
+
+## Salida
+
+**En `_ais_sdd/design-system/`:**
+- `color-palette.md` — paleta con valores
 - `typography.md` — sistema tipográfico
-- `spacing.md` — espaçamento, grid e breakpoints
-- `tokens.md` — todos os tokens em tabela
+- `components.md` — componentes custom de FBSControles
 - `design-system.md` — documento consolidado
 
-## Escala de confiança
-🟢 Extraído de arquivo de configuração | 🟡 Inferido de uso/screenshots | 🔴 Token referenciado mas não definido
+## Escala de confianza
+🟢 Extraído de archivo de configuración | 🟡 Inferido de uso/screenshots | 🔴 Token referenciado pero no definido
 
-Informe ao Reversa: tokens documentados por categoria.
+Informá al orquestador: tokens documentados por categoría.
