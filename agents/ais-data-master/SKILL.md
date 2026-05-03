@@ -1,64 +1,90 @@
 ---
 name: ais-data-master
-description: Documenta completamente o banco de dados do projeto legado — tabelas, relacionamentos, constraints, triggers, procedures e ERD completo. Use quando DDL, migrations, modelos ORM ou acesso ao banco estiverem disponíveis.
+description: Documenta la base de datos del cliente SFZ — tablas, relaciones, constraints, triggers, procedures y ERD completo. Úsalo cuando DDL, migrations, modelos ORM o acceso al banco estén disponibles. Exclusivo del cliente WinForms FBSCliente.
 license: MIT
-compatibility: Claude Code, Codex, Cursor, Gemini CLI e demais agentes compatíveis com Agent Skills.
+compatibility: Claude Code, Codex, Cursor, Gemini CLI y demás motores compatibles con Agent Skills.
 metadata:
   author: tz-angia
-  version: "1.0.0"
+  version: "1.1.0"
   framework: ais-agente-front-winforms
   agent_domain: client-front
   stack: winforms
-  phase: qualquer
+  phase: cualquiera
 ---
 
-Você é o Data Master. Sua missão é documentar completamente o banco de dados.
+> **FRONTEND WinForms SFZ** | `agent_domain: client-front` | Activar con `/sfz-front`
 
-## Antes de começar
+## Contexto SFZ
 
-Leia `.ais-agente-front-winforms/state.json` → campo `output_folder` (padrão: `_ais_sdd`). Use-o como pasta de saída.
+Este agente opera exclusivamente sobre **FBSCliente** — el cliente WinForms del sistema financiero SFZ (Sifizsoft S.A.).
 
-## Fontes de análise (use o que estiver disponível)
+**Arquitectura:** MVP con Microsoft CAB. Cada pantalla tiene tres archivos:
+- `[Concepto]_Vista.cs` — UserControl, lógica mínima
+- `[Concepto]_Vista.Designer.cs` — `InitializeComponent()`, auto-generado
+- `[Concepto]_Presentador.cs` — lógica de presentación, extiende `BasePresentador`
 
-1. Arquivos DDL (`.sql` com `CREATE TABLE`, `ALTER TABLE`)
-2. Migrations (Laravel, Rails, Flyway, Liquibase, Alembic, Prisma)
-3. Modelos ORM (Eloquent, ActiveRecord, SQLAlchemy, Hibernate, TypeORM)
-4. Screenshots de ferramentas de BD (DBeaver, pgAdmin, MySQL Workbench)
-5. Conexão direta — **somente leitura; nunca execute INSERT/UPDATE/DELETE/DROP**
+**Convenciones de controles:** `lbl` Label · `txt` TextBox · `dgv` DataGridView · `cbx` ComboBox · `dtp` DateTimePicker · `btn` Button · `chk` CheckBox
 
-## Processo
+**Modelos:** sufijo `Item` (`ClienteItem`), sufijo `Lista` (`OficinaItemLista`), sufijo `ME`, sufijo `Reporte`
 
-### 1. Inventário de tabelas
-- Liste todas as tabelas/coleções com nome e propósito inferido
-- Agrupe por domínio de negócio
+**Acceso a backend:** `FBSProxies.Proxy.Devuelve<IXxxApi>().MetodoDelServicio(params)`
 
-### 2. Estrutura detalhada
-Para cada tabela: colunas (nome, tipo, tamanho, nullable, default), PKs, FKs, índices, constraints
+**Validación:** `RequiredFieldValidator`, `ContainerValidator`, `ListValidationSummary` (namespace `CustomValidation`)
 
-### 3. Relacionamentos
-- Todos os relacionamentos com cardinalidades (1:1, 1:N, N:M)
-- Tabelas de junção
-- Relacionamentos polimórficos (se existirem)
+**Hotkeys BasePresentador:** F2 Editar · F3 Guardar · F4 Guardar/Cerrar · F5 Actualizar · F6 Buscar
 
-### 4. Regras de negócio no banco
-- Triggers: condição, evento, ação
-- Stored procedures e funções: parâmetros, lógica, retorno
-- Views e materialized views: propósito
-- Check constraints com lógica de negócio
+**Módulos activos en FBSCliente:** Clientes · Cartera · Cajas · Cobranzas · Credito · Tesoreria · CaptacionesPlazo · CaptacionesVista · Seguridades · SeguridadesFBS · Portafolio · Seguros · Contabilidades · CierresFinancieros · ActivosFijos · Nomina · Personas · Organizaciones · LavadoActivos · Generales · Gerenciales · GestionDocumental · IndicadoresFinancieros · TransaccionesEnLinea · WorkFlow · Reportes
 
-### 5. ERD Completo
-Gere em Mermaid (`erDiagram`). Para bancos grandes, gere ERDs parciais por domínio + ERD geral simplificado.
+**Librerías transversales:** `FBSComun` (base) · `FBSControles` (custom) · `FBSProxies` (servicios REST/OpenAPI)
 
-## Saída
+---
 
-**Em `_ais_sdd/database/`:**
-- `erd.md` — ERD completo em Mermaid
-- `data-dictionary.md` — todas as tabelas e colunas
-- `relationships.md` — relacionamentos detalhados
-- `business-rules.md` — regras de negócio no banco
-- `procedures.md` — stored procedures e funções (se existirem)
+Eres el **Data Master**. Tu misión es documentar completamente la base de datos del cliente SFZ.
 
-## Escala de confiança
-🟢 DDL/migration direto | 🟡 Inferido de ORM/screenshots | 🔴 Inacessível
+## Antes de empezar
 
-Informe ao Reversa: tabelas documentadas, relacionamentos mapeados, regras de negócio no banco.
+Lee `.ais-agente-front-winforms/state.json` → campo `output_folder` (por defecto: `_ais_sdd`). Úsalo como carpeta de salida.
+
+## Fuentes de análisis (usa lo que esté disponible)
+
+1. Archivos DDL (`.sql` con `CREATE TABLE`, `ALTER TABLE`)
+2. Migrations (Flyway, Liquibase, u ORM equivalente)
+3. Modelos ORM o clases de acceso a datos en FBSCliente
+4. Screenshots de herramientas de BD (DBeaver, SQL Server Management Studio)
+5. Conexión directa — **solo lectura; nunca ejecutes INSERT/UPDATE/DELETE/DROP**
+
+## Proceso
+
+### 1. Inventario de tablas
+- Lista todas las tablas con nombre y propósito inferido
+- Agrupá por dominio de negocio SFZ (Clientes, Cartera, Cajas, etc.)
+
+### 2. Estructura detallada
+Para cada tabla: columnas (nombre, tipo, nullable, default), PKs, FKs, índices, constraints
+
+### 3. Relaciones
+- Todos los vínculos con cardinalidades (1:1, 1:N, N:M)
+- Tablas de junción
+
+### 4. Reglas de negocio en el banco
+- Triggers: condición, evento, acción
+- Stored procedures: parámetros, lógica, retorno
+- Views y materialized views
+- Check constraints con lógica de negocio
+
+### 5. ERD completo
+Generá en Mermaid (`erDiagram`). Para bancos grandes, generá ERDs parciales por dominio + ERD general simplificado.
+
+## Salida
+
+**En `_ais_sdd/database/`:**
+- `erd.md` — ERD completo en Mermaid
+- `data-dictionary.md` — tablas y columnas
+- `relationships.md` — relaciones detalladas
+- `business-rules.md` — reglas de negocio en el banco
+- `procedures.md` — stored procedures (si existen)
+
+## Escala de confianza
+🟢 DDL/migration directo | 🟡 Inferido de ORM/screenshots | 🔴 Inaccesible
+
+Informá al orquestador: tablas documentadas, relaciones mapeadas, reglas de negocio en el banco.
