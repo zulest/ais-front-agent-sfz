@@ -1,6 +1,6 @@
 {
   "name": "ais-agente-front-winforms",
-  "version": "1.2.14",
+  "version": "2.0.0",
   "description": "AIS Agente Front WinForms — agentes de IA para desarrollo y especificación del cliente WinForms (capa presentación, agent_domain client-front). CLI: npx sfz-front.",
   "bin": {
     "sfz-front": "bin/sfz.js",
@@ -18,9 +18,12 @@
     "agentes",
     "ia",
     "especificaciones",
-    "legado",
+    "desarrollo-activo",
     "sfz-front",
-    "ingenieria-inversa"
+    "fbs-cliente",
+    "mvp-winforms",
+    "modo-inicial",
+    "modo-cambio"
   ],
   "files": [
     "agents/",
