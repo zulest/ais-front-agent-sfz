@@ -13,13 +13,14 @@ const pkg = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'))
 const [,, command, ...args] = process.argv;
 
 const commands = {
-  install:            () => import('../lib/commands/install.js'),
-  update:             () => import('../lib/commands/update.js'),
-  status:             () => import('../lib/commands/status.js'),
-  uninstall:          () => import('../lib/commands/uninstall.js'),
-  'add-agent':        () => import('../lib/commands/add-agent.js'),
-  'add-engine':       () => import('../lib/commands/add-engine.js'),
-  'export-diagrams':  () => import('../lib/commands/export-diagrams.js'),
+  install:          () => import('../lib/commands/install.js'),
+  update:           () => import('../lib/commands/update.js'),
+  status:           () => import('../lib/commands/status.js'),
+  uninstall:        () => import('../lib/commands/uninstall.js'),
+  'add-agent':      () => import('../lib/commands/add-agent.js'),
+  'add-engine':     () => import('../lib/commands/add-engine.js'),
+  'export-diagrams':() => import('../lib/commands/export-diagrams.js'),
+  'update-context': () => import('../lib/commands/update-context.js'),
 };
 
 const green = chalk.hex(CLI_ACCENT_HEX);
@@ -37,6 +38,7 @@ if (!command || command === '--help' || command === '-h') {
     uninstall          Elimina el paquete del proyecto
     add-agent          Añade un agente al proyecto
     add-engine         Añade soporte para otro motor de IA
+    update-context     Detecta cambios desde el último commit y guarda reporte para sincronización
     export-diagrams    Exporta diagramas Mermaid como SVG/PNG
                        Opciones: --format=svg|png  --output=<carpeta>
                        Requiere: npm install -g @mermaid-js/mermaid-cli
