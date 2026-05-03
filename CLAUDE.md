@@ -25,6 +25,8 @@ This is an **npm CLI package** (`ais-agente-front-winforms`) that installs AI ag
 
 - **`agent_domain: client-front`** — this package is scoped exclusively to WinForms UI / desktop client. It must not be confused with backend AIS packages.
 - **Trigger**: Users activate the orchestrator in their AI engine by typing `/sfz-front` (slash-capable engines) or `sfz-front` (Codex). Never `/sfz` — that name is reserved for the backend package.
+- **Dos modos de operación**: `MODO INICIAL` (análisis global, primera vez) y `MODO CAMBIO` (correcciones y nuevas funcionalidades). El orquestador detecta el modo automáticamente.
+- **`update-context` command**: `npx sfz-front update-context` — detecta archivos modificados desde el último commit y guarda `.ais-agente-front-winforms/last-sync.json` para que el Actualizador de Contexto los procese.
 - **Runtime directory**: After install, all state lives in `.ais-agente-front-winforms/` inside the **target project**, not this repo.
 - **Output directory**: Generated specs go to `_ais_sdd/` by default (configurable in `state.json`).
 
@@ -42,9 +44,13 @@ Classifies installed files as `intact | modified | missing` by comparing against
 
 ### Agent roster
 
-**Required (always installed):** `ais-agente-front-winforms` (orchestrator), `ais-inventariador-winforms`, `ais-analista-codigo`, `ais-analista-reglas-negocio`, `ais-arquitecto-sistema`, `ais-redactor-especificaciones`
+**Modo Inicial — Análisis global (required, always installed):**
+`ais-agente-front-winforms` (orchestrator), `ais-inventariador-winforms`, `ais-analista-codigo`, `ais-analista-reglas-negocio`, `ais-arquitecto-sistema`, `ais-redactor-especificaciones`
 
-**Optional:** `ais-revisor-especificaciones`, `ais-documentador-ui`, `ais-extractor-forms-winforms`, `ais-mapeador-proxy-rest`, `ais-data-master`, `ais-design-system`, `ais-agents-help`, `ais-reconstructor`
+**Modo Cambio — Desarrollo activo (required, always installed):**
+`ais-especificador-cambios-front`, `ais-planificador-implementacion-front`, `ais-actualizador-contexto-front`
+
+**Optional:** `ais-revisor-especificaciones`, `ais-documentador-ui`, `ais-extractor-forms-winforms`, `ais-mapeador-proxy-rest`, `ais-data-master`, `ais-design-system`, `ais-agents-help`
 
 Each agent lives in `agents/<id>/SKILL.md` plus optional `references/` files.
 
