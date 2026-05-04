@@ -5,10 +5,13 @@ Documento de referencia para el agente **ais-extractor-forms-winforms** y para q
 ## Orden de ejecución (reproducible)
 
 1. **Fase A — Estructura desde Designer**  
-   Leer `*.Designer.cs` del módulo (o alcance acordado): árbol de controles, nombres, tipos, propiedades visibles (`Visible`, `Enabled`, `ReadOnly`, `MaxLength`, máscaras, etc.).
+   Leer `*.Designer.cs` del módulo (o alcance acordado): árbol de controles, nombres, tipos, propiedades visibles (`Visible`, `Enabled`, `ReadOnly`, `MaxLength`, máscaras, etc.).  
+   - **DataBindings:** si el Designer contiene `DataBindings.Add(new Binding("Prop", bindingSource, "DtoProp", ...))`, extraer el mapeo control → propiedad DTO. Es información determinista del Designer y es valiosa para el Analista de Código.  
+   - **Labels locales:** en SFZ/FBSCliente, muchos labels son variables locales en `InitializeComponent()` (p. ej. `System.Windows.Forms.Label fechaIngresoLabel;`), no campos de instancia. Son igual de válidos para Phase B — extrae su `.Text` normalmente.
 
 2. **Fase B — Etiquetas ↔ entradas**  
-   Construir `labels_map`: para cada control de entrada, asociar `.Text` de `Label` (u otra convención documentada en evidencia). Sin evidencia → 🔴.
+   Construir `labels_map`: para cada control de entrada, asociar `.Text` de `Label` (u otra convención documentada en evidencia). Sin evidencia → 🔴.  
+   - **`ApplyResources` pattern:** si el Designer llama `resources.ApplyResources(control, "controlName")` en lugar de asignar `.Text` directamente, el texto está en el archivo `*.resx` hermano. Leer `<data name="controlName.Text"><value>...</value></data>` del `.resx` para obtener el caption. Marcar como `🟡 INFERIDO (desde .resx)` si se toma del resx.
 
 3. **Fase C — DataGridView**  
    Por cada grid, extraer columnas de forma determinista: nombre, encabezado, tipo, `DataPropertyName`, lectura/edición si consta. Sin filas inventadas.

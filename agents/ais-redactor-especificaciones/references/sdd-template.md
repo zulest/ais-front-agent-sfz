@@ -1,69 +1,154 @@
-# [Nome do Componente]
+# SDD Template — AIS Agente Front WinForms
+> Nivel: `completo` | Sistema: FBSCliente WinForms | Dominio: `client-front`
 
-## Visão Geral
-[O que é, qual problema resolve — 2 a 3 linhas]
+---
 
-## Responsabilidades
-- [Responsabilidade 1]
-- [Responsabilidade 2]
+```markdown
+---
+title: "[Componente] — SDD"
+component: NombreComponente
+type: Presentador | Vista | WorkItem
+namespace: Modulo.Submodulo
+source_file: ruta/al/Archivo.cs
+module: NombreModulo
+generated_at: "YYYY-MM-DD"
+agent: ais-redactor-especificaciones
+doc_level: completo
+status: draft
+---
 
-## Interface
-[Entradas, saídas, parâmetros, tipos de dados]
+# [Componente] — Software Design Document
 
-## Regras de Negócio
-- [Regra 1] 🟢
-- [Regra 2] 🟡
-- [Comportamento desconhecido] 🔴
+## 1. Responsabilidades
 
-## Fluxo Principal
-1. [Passo 1]
-2. [Passo 2]
-3. [Passo N]
+| # | Responsabilidad | Prioridad (MoSCoW) | Confianza |
+|---|-----------------|-------------------|-----------|
+| R1 | ... | Must | 🟢 |
+| R2 | ... | Should | 🟡 |
 
-## Fluxos Alternativos
-- **[Condição especial]:** [comportamento]
-- **[Caso de erro]:** [comportamento]
+> **Must** — camino crítico o llamado por múltiples componentes  
+> **Should** — importante pero con alternativa/fallback  
+> **Could** — solo casos borde o uso infrecuente  
+> **Won't** — comentado, flag apagada, deprecado
 
-## Dependências
-- [Componente X] — [motivo]
-- [Serviço Y] — [como usa]
+---
 
-## Requisitos Não Funcionais
+## 2. Dependencias
 
-| Tipo | Requisito inferido | Evidência no código | Confiança |
-|------|--------------------|---------------------|-----------|
-| Performance | [ex: timeout de 30s em chamadas externas] | `caminho/arquivo.ext:linha` | 🟢 |
-| Segurança | [ex: autenticação obrigatória na rota] | `caminho/arquivo.ext:linha` | 🟡 |
-| Escalabilidade | [ex: uso de cache Redis] | `caminho/arquivo.ext:linha` | 🟢 |
-| Disponibilidade | [ex: retry automático em falha] | `caminho/arquivo.ext:linha` | 🟡 |
+### Entradas
 
-> Inferido a partir do código. Validar com equipe de operações.
+| Fuente | Tipo | Descripción | Confianza |
+|--------|------|-------------|-----------|
+| `NombreClase` | Parámetro constructor | ... | 🟢 |
+| `WorkItem.Evento` | Evento CAB | ... | 🟢 |
 
-## Critérios de Aceitação
+### Salidas / Efectos
 
-```gherkin
-Dado [pré-condição]
-Quando [ação]
-Então [resultado esperado]
+| Destino | Tipo | Descripción | Confianza |
+|---------|------|-------------|-----------|
+| `IXxxApi.Metodo()` | Llamada REST | ... | 🟢 |
+| `WorkItem.PublicaEvento` | Evento CAB | ... | 🟢 |
 
-Dado [condição de erro]
-Quando [ação inválida]
-Então [comportamento de falha esperado]
+### Proxies REST consumidos
+
+| Interface | Método | Endpoint | Swagger | Confianza |
+|-----------|--------|----------|---------|-----------|
+| `IXxxApi` | `MetodoXxx` | `POST /Xxx/MetodoXxx` | `Xxx.Command.swagger.json` | 🟢 |
+
+---
+
+## 3. Flujos principales
+
+### Flujo: [Nombre del flujo]
+
+```
+Precondición: ...
+
+1. ...
+2. ...
+   → Si condición A: ...
+   → Si condición B: ...
+3. ...
+
+Postcondición: ...
 ```
 
-## Prioridade
+Confianza: 🟢
 
-| Requisito | MoSCoW | Justificativa |
-|-----------|--------|---------------|
-| [Responsabilidade principal] | Must | Caminho crítico — chamado em todo fluxo |
-| [Regra de negócio central] | Must | Regra de negócio sem fallback |
-| [Funcionalidade secundária] | Should | Importante mas com alternativa |
-| [Caso de borda] | Could | Raramente acionado |
+---
 
-> Prioridade inferida por frequência de chamada e posição na cadeia de dependências.
+## 4. Reglas de negocio
 
-## Rastreabilidade de Código
+| Código | Descripción | Origen en código | Confianza |
+|--------|-------------|-----------------|-----------|
+| RN-01  | ...         | `Clase.Metodo()` | 🟢 |
+| RN-02  | ...         | Inferido por patrón | 🟡 |
 
-| Arquivo | Função / Classe | Cobertura |
+---
+
+## 5. Validaciones
+
+| Validador / Campo | Regla | Aplicado en | Confianza |
+|-------------------|-------|-------------|-----------|
+| `containerValidator1` | Valida todos los campos antes de guardar | Presentador | 🟢 |
+
+---
+
+## 6. Requisitos no funcionales
+
+> Solo incluir si hay evidencia directa en el código. No inventar.
+
+| Categoría | Detalle | Evidencia en código | Confianza |
+|-----------|---------|---------------------|-----------|
+| Seguridad | ... | `VerificaAccesoPresentador` | 🟢 |
+| Performance | ... | timeout explícito | 🟡 |
+| Disponibilidad | ... | retry logic / circuit breaker | 🟡 |
+
+---
+
+## 7. Criterios de aceptación
+
+### CA-01: [Happy path — nombre descriptivo]
+
+```
+Dado:     ...
+Cuando:   ...
+Entonces: ...
+```
+
+Confianza: 🟢
+
+### CA-02: [Caso de fallo — nombre descriptivo]
+
+```
+Dado:     ...
+Cuando:   ...
+Entonces: ...
+```
+
+Confianza: 🟡
+
+---
+
+## 8. Trazabilidad de código
+
+| Archivo | Clase / Función | Cobertura |
 |---------|-----------------|-----------|
-| `caminho/arquivo.ext` | `NomeDaClasse` | 🟢 |
+| `ruta/Archivo.cs` | `NombreClase` | 🟢 |
+
+---
+
+## 9. Preguntas abiertas 🔴
+
+| # | Pregunta | Impacto | Confianza |
+|---|----------|---------|-----------|
+| P1 | ... | Alto / Medio / Bajo | 🔴 |
+
+---
+
+## Escala de confianza
+
+🟢 **CONFIRMADO** — extraído directamente del código fuente  
+🟡 **INFERIDO** — deducido por patrón o contexto, sin leer todos los archivos  
+🔴 **REQUIERE_REVISIÓN** — no determinable sin ejecución o código faltante
+```

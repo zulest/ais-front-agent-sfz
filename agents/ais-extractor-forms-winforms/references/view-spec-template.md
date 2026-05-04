@@ -21,6 +21,14 @@ Reemplazar `{FormClass}`, `{Module}`, rutas y tablas con datos reales. Eliminar 
 |-----------------|------|-----------------|----------------|-------|
 | … | … | … | … | … |
 
+## DataBindings — mapeo DTO
+
+> Extraídos de `DataBindings.Add(...)` en el Designer. Omitir sección si no hay bindings declarativos.
+
+| Control | Propiedad DTO | Dirección |
+|---------|--------------|-----------|
+| … | … | ↔ / ← / → |
+
 ## DataGridView
 
 ### `{gridName}`

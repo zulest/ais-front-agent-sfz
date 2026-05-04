@@ -1,0 +1,34 @@
+installation:
+  version: 2.0.0
+  installDate: 2026-05-03T05:26:37.741Z
+  lastUpdated: 2026-05-03T05:26:37.741Z
+
+engines:
+  - claude-code
+  - cursor
+  - windsurf
+  - antigravity
+
+agents:
+  - ais-agente-front-winforms
+  - ais-inventariador-winforms
+  - ais-analista-codigo
+  - ais-analista-reglas-negocio
+  - ais-arquitecto-sistema
+  - ais-redactor-especificaciones
+  - ais-especificador-cambios-front
+  - ais-planificador-implementacion-front
+  - ais-actualizador-contexto-front
+  - ais-revisor-especificaciones
+  - ais-documentador-ui
+  - ais-extractor-forms-winforms
+  - ais-mapeador-proxy-rest
+  - ais-data-master
+  - ais-design-system
+  - ais-agents-help
+  - ais-normalizador-estandares-front
+  - ais-evaluador-calidad-specs-front
+  - ais-trazador-cambios
+  - ais-detector-deriva
+  - ais-sincronizador-tickets
+  - ais-generador-tests-front

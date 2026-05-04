@@ -1,11 +1,11 @@
 ---
 name: ais-agents-help
-description: Explica qué hace cada uno de los 16 agentes del paquete AIS Agente Front WinForms SFZ y cuándo usarlos. Incluye los dos modos de operación (Inicial y Cambio) y la secuencia recomendada. Activar con /ais-agents-help.
+description: Explica qué hace cada uno de los 24 agentes del paquete AIS Agente Front WinForms SFZ y cuándo usarlos. Incluye los dos modos de operación (Inicial y Cambio) y la secuencia recomendada. Activar con /ais-agents-help.
 license: MIT
 compatibility: Claude Code, Codex, Cursor, Gemini CLI y demás motores compatibles con Agent Skills.
 metadata:
   author: tz-angia
-  version: "2.0.0"
+  version: "3.0.0"
   framework: ais-agente-front-winforms
   agent_domain: client-front
   stack: winforms
@@ -39,7 +39,7 @@ Este agente opera exclusivamente sobre **FBSCliente** — el cliente WinForms de
 
 ---
 
-Equipo de **17 agentes** para **desarrollo activo del cliente WinForms SFZ** (FBSCliente).
+Equipo de **24 agentes** para **desarrollo activo del cliente WinForms SFZ** (FBSCliente).
 
 **Recordá:** solo `/sfz-front` y `sfz-front` para el frontend. El backend tiene su propio paquete `sfz-back`.
 
@@ -99,6 +99,14 @@ Toma la spec y genera el plan paso a paso en C# WinForms SFZ. Cualquier LLM pued
 **Comando:** `/ais-actualizador-contexto-front`
 Post-desarrollo: lee `last-sync.json` (de `npx sfz-front update-context`) y actualiza la base de conocimiento con los cambios reales.
 
+### Evaluador de Calidad de Specs
+**Comando:** `/ais-evaluador-calidad-specs-front`
+Aplica una rúbrica de 4 dimensiones (completitud, verificabilidad, especificidad técnica, trazabilidad) a specs de cambio y planes de implementación. Puntúa sobre 16, sugiere reescrituras concretas y emite un veredicto go/no-go antes de que el LLM implemente.
+
+### Generador de Tests Front
+**Comando:** `/ais-generador-tests-front`
+Convierte los criterios de aceptación de la spec y las tareas del plan en tests concretos: una clase C# con tests unitarios (NUnit + Moq, con patrón de método virtual para mockear FBSProxies) y un checklist de prueba manual Dado/Cuando/Entonces. Corre después del Planificador, antes de que el LLM implemente.
+
 ---
 
 ## ESPECIALIDAD — Opcionales
@@ -123,6 +131,26 @@ Documenta tokens DevExpress 21.2, colores, tipografía y componentes custom de F
 **Comando:** `/ais-normalizador-estandares-front`
 Lee el código real de FBSCliente para extraer convenciones implícitas, detectar inconsistencias y generar el documento de estándares de programación del equipo con ADRs retroactivos.
 
+### Trazador de Cambios
+**Comando:** `/ais-trazador-cambios`
+Construye la cadena de trazabilidad completa de cada cambio — pedido → spec → aprobación → plan → commit — leyendo los logs JSONL de auditoría. Genera `_ais_sdd/audit/changelog.md`.
+
+### Detector de Deriva
+**Comando:** `/ais-detector-deriva`
+Detecta proactivamente qué secciones de las specs en `_ais_sdd/sdd/` han quedado desactualizadas respecto al código actual. Prioriza specs marcadas como `stale` por `update-context`. Genera `_ais_sdd/drift-report.md`.
+
+### Sincronizador de Tickets
+**Comando:** `/ais-sincronizador-tickets`
+Lee el frontmatter de specs y planes vinculados (campo `ticket` + `ticket_provider`) y genera los comandos exactos para actualizar el ticket en Azure DevOps, Jira o GitHub Issues.
+
+### Diagnosticador de Bugs Front
+**Comando:** `/ais-diagnosticador-bugs-front`
+Recibe evidencia visual de un error (screenshot del formulario, mensaje de excepción, acción que lo disparó) y convierte esa evidencia en una spec de corrección pre-llenada con el root cause identificado y la solución propuesta. Clasifica automáticamente el tipo de error (NullReferenceException, grilla vacía, campo no actualiza, etc.) y emite la hipótesis con nivel de confianza 🟢🟡🔴 antes de escribir la spec.
+
+### Clonador de Funcionalidad Front
+**Comando:** `/ais-clonador-funcionalidad-front`
+Toma un formulario o módulo existente como plantilla y genera spec + plan de implementación para una variante nueva. Mapea qué se adapta (nombres de clase, DTO, interface de API), qué se agrega (controles nuevos, lógica específica) y qué se omite. Genera los dos artefactos en una sola operación, listos para aprobar.
+
 ---
 
 ## Secuencias recomendadas
@@ -136,16 +164,34 @@ Inventariador → Extractor Forms → Analista Código (N módulos)
 → Analista Reglas → Arquitecto → Redactor → Revisor
 ```
 
-**Corrección o nueva funcionalidad:**
+**Corrección o nueva funcionalidad (flujo enterprise):**
 ```
-/sfz-front  →  detecta Modo Cambio  →  activa Especificador → Planificador
-→ LLM implementa → npx sfz-front update-context → Actualizador de Contexto
+/sfz-front  →  [chequea health.md — Detector de Deriva si hay 🔴]
+→ Especificador  →  npx sfz-front approve <spec>  →  [npx sfz-front link-ticket opcional]
+→ Evaluador de Calidad (evalúa spec)
+→ Planificador  →  npx sfz-front approve <plan>
+→ Evaluador de Calidad (evalúa plan)
+→ Generador de Tests  →  LLM implementa (guiado por tests)  →  tests pasan
+→ npx sfz-front update-context  →  Actualizador de Contexto
+→ Sincronizador de Tickets  →  Trazador de Cambios
 ```
 
 **Con extracción de pantallas y mapeo OpenAPI:**
 ```
 Inventariador → Extractor Forms → Analista Código → Analista Reglas
 → Mapeador Proxy→REST → Arquitecto → Redactor → Revisor
+```
+
+**Para reportar y corregir un bug desde evidencia visual:**
+```
+Diagnósticador de Bugs Front  →  npx sfz-front approve <spec-bug>
+→ Planificador  →  Generador de Tests  →  LLM implementa
+```
+
+**Para clonar un formulario existente como nueva pantalla:**
+```
+Clonador de Funcionalidad Front  →  npx sfz-front approve <spec> + <plan>
+→ Generador de Tests  →  LLM implementa
 ```
 
 **Para generar el documento de estándares del equipo:**

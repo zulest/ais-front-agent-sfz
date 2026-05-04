@@ -26,7 +26,9 @@ This is an **npm CLI package** (`ais-agente-front-winforms`) that installs AI ag
 - **`agent_domain: client-front`** — this package is scoped exclusively to WinForms UI / desktop client. It must not be confused with backend AIS packages.
 - **Trigger**: Users activate the orchestrator in their AI engine by typing `/sfz-front` (slash-capable engines) or `sfz-front` (Codex). Never `/sfz` — that name is reserved for the backend package.
 - **Dos modos de operación**: `MODO INICIAL` (análisis global, primera vez) y `MODO CAMBIO` (correcciones y nuevas funcionalidades). El orquestador detecta el modo automáticamente.
-- **`update-context` command**: `npx sfz-front update-context` — detecta archivos modificados desde el último commit y guarda `.ais-agente-front-winforms/last-sync.json` para que el Actualizador de Contexto los procese.
+- **`update-context` command**: `npx sfz-front update-context` — detecta archivos modificados, marca specs desactualizadas (`stale: true`), genera `_ais_sdd/health.md`, escribe audit entry en `.ais-agente-front-winforms/audit/`.
+- **`approve` command**: `npx sfz-front approve <archivo> [status]` — cambia el `status` en el frontmatter de una spec o plan (draft → approved | rejected | pending-review). Escribe audit entry.
+- **`link-ticket` command**: `npx sfz-front link-ticket <archivo> <ticket-id>` — vincula una spec o plan a un ticket AzDO/Jira/GitHub añadiendo `ticket` y `ticket_provider` al frontmatter. Escribe audit entry.
 - **Runtime directory**: After install, all state lives in `.ais-agente-front-winforms/` inside the **target project**, not this repo.
 - **Output directory**: Generated specs go to `_ais_sdd/` by default (configurable in `state.json`).
 
@@ -50,7 +52,7 @@ Classifies installed files as `intact | modified | missing` by comparing against
 **Modo Cambio — Desarrollo activo (required, always installed):**
 `ais-especificador-cambios-front`, `ais-planificador-implementacion-front`, `ais-actualizador-contexto-front`
 
-**Optional:** `ais-revisor-especificaciones`, `ais-documentador-ui`, `ais-extractor-forms-winforms`, `ais-mapeador-proxy-rest`, `ais-data-master`, `ais-design-system`, `ais-agents-help`, `ais-normalizador-estandares-front`
+**Optional:** `ais-revisor-especificaciones`, `ais-documentador-ui`, `ais-extractor-forms-winforms`, `ais-mapeador-proxy-rest`, `ais-data-master`, `ais-design-system`, `ais-agents-help`, `ais-normalizador-estandares-front`, `ais-evaluador-calidad-specs-front`, `ais-trazador-cambios`, `ais-detector-deriva`, `ais-sincronizador-tickets`, `ais-generador-tests-front`, `ais-diagnosticador-bugs-front`, `ais-clonador-funcionalidad-front`
 
 Each agent lives in `agents/<id>/SKILL.md` plus optional `references/` files.
 
@@ -61,3 +63,27 @@ Each supported AI engine gets its own entry file template in `templates/engines/
 ### Absolute rule enforced by the orchestrator
 
 The agents **never** modify pre-existing project files. They only write to `.ais-agente-front-winforms/` and the configured output folder (`_ais_sdd/` by default).
+
+
+---
+
+# AIS Agente Front WinForms
+
+> Paquete de agentes de IA para el **cliente WinForms** (`agent_domain: client-front`). El backend u otros dominios usan **otro** orquestador en otro proyecto.
+
+## Cómo usar
+
+Escribí **`/sfz-front`** o la palabra **`sfz-front`** para iniciar el orquestador. **No uses `/sfz` ni `sfz`** con este paquete (reservados para el paquete de servidor u otro AIS).
+
+## Comportamiento al activar
+
+Cuando el usuario escriba `/sfz-front` o `sfz-front`:
+
+1. Activa el skill `ais-agente-front-winforms` en `.claude/skills/ais-agente-front-winforms/SKILL.md`
+2. Si no está en `.claude/skills/`, usa `.agents/skills/ais-agente-front-winforms/SKILL.md`
+3. Lee el `SKILL.md` completo y sigue exactamente las instrucciones
+
+## Regla no negociable
+
+Nunca borres, modifiques ni sobrescribas archivos preexistentes del proyecto legado.
+Este paquete escribe **solo** en `.ais-agente-front-winforms/` y `_ais_sdd/`.

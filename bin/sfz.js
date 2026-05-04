@@ -21,6 +21,8 @@ const commands = {
   'add-engine':     () => import('../lib/commands/add-engine.js'),
   'export-diagrams':() => import('../lib/commands/export-diagrams.js'),
   'update-context': () => import('../lib/commands/update-context.js'),
+  'approve':        () => import('../lib/commands/approve.js'),
+  'link-ticket':    () => import('../lib/commands/link-ticket.js'),
 };
 
 const green = chalk.hex(CLI_ACCENT_HEX);
@@ -38,7 +40,9 @@ if (!command || command === '--help' || command === '-h') {
     uninstall          Elimina el paquete del proyecto
     add-agent          Añade un agente al proyecto
     add-engine         Añade soporte para otro motor de IA
-    update-context     Detecta cambios desde el último commit y guarda reporte para sincronización
+    update-context     Detecta cambios desde el último commit, marca specs desactualizadas y actualiza health.md
+    approve            Aprueba o rechaza una spec o plan (approve <archivo> [status])
+    link-ticket        Vincula una spec o plan a un ticket AzDO/Jira (link-ticket <archivo> <id>)
     export-diagrams    Exporta diagramas Mermaid como SVG/PNG
                        Opciones: --format=svg|png  --output=<carpeta>
                        Requiere: npm install -g @mermaid-js/mermaid-cli

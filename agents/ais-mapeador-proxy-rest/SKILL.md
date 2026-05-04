@@ -46,21 +46,43 @@ Eres el **Mapeador Proxy→REST**. Tu misión es construir un mapeo trazable ent
 
 ## Antes de empezar
 
-1. Lee `.ais-agente-front-winforms/state.json` (`output_folder`, `doc_level`, `openapi_source` si existe).
+1. Lee `.ais-agente-front-winforms/state.json` → `output_folder`, `doc_level`, `openapi_source`.
 2. Lee `.ais-agente-front-winforms/context/surface.json` (módulos, proyectos proxy detectados).
-3. Si el proyecto incluye OpenAPI JSON descargado, úsalo como fuente primaria. Si no, solicita la URL o ruta.
+3. Lee `.ais-agente-front-winforms/context/modules.json` si existe (operaciones proxy por módulo ya catalogadas por `ais-analista-codigo`).
+
+### Fuente de los JSONs de Swagger
+
+El campo `openapi_source` de `state.json` indica la carpeta con los JSONs de Swagger. La convención del proyecto SFZ es:
+
+```
+<openapi_source>/          ← por defecto: "SwaggerDescargados"
+  <Modulo>.Command.swagger.json   ← operaciones de escritura (CQRS Command side)
+  <Modulo>.Query.swagger.json     ← operaciones de lectura  (CQRS Query side)
+```
+
+**Si `openapi_source` no está en `state.json`**, buscar en `SwaggerDescargados/` dentro del directorio del proyecto. Si tampoco existe, pedir la ruta al usuario.
+
+> **Nota CQRS:** el backend separa Command y Query en servicios distintos. La capa `FBSProxies` los agrega en una sola interfaz `IXxxApi`. Algunos métodos de lectura pueden estar en el JSON de Command (el split es por microservicio, no puramente por semántica read/write).
+
+### Patrón de mapeo proxy → endpoint
+
+El nombre del método proxy coincide exactamente con el `operationId` del Swagger:
+
+| Llamada en Presentador | operationId | Endpoint | Archivo swagger |
+|------------------------|-------------|----------|----------------|
+| `IClienteApi.NuevoCliente(me)` | `NuevoCliente` | `POST /Cliente/NuevoCliente` | Command |
+| `IClienteApi.DevuelvePorSecuencialCliente(me)` | `DevuelvePorSecuencialCliente` | `POST /Cliente/DevuelvePorSecuencialCliente` | Query |
+
+URL pattern: `POST /{Tag}/{OperationId}` donde `Tag` = nombre de la entidad.
 
 ## Proceso
 
-1. Inventariar operaciones proxy usadas por módulo.
-2. Para cada operación, buscar candidatos en OpenAPI por:
-   - nombre/verbos
-   - tags
-   - DTOs/request/response
+1. Leer las operaciones proxy del módulo desde `modules.json` (campo `proxies` y las llamadas documentadas en `functions`).
+2. Para cada interfaz proxy (`IXxxApi`), buscar en `{openapi_source}/{Modulo}.Command.swagger.json` y `{Modulo}.Query.swagger.json` los paths cuyo `operationId` coincida con el nombre del método.
 3. Registrar el mapeo con confianza:
-   - 🟢 si hay evidencia directa
-   - 🟡 si es heurístico
-   - 🔴 si no se puede determinar
+   - 🟢 `operationId` encontrado y coincide exactamente
+   - 🟡 coincidencia parcial o heurística
+   - 🔴 no encontrado en ningún swagger
 
 ## Salida
 

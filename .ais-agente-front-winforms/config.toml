@@ -1,0 +1,52 @@
+# AIS Agente Front WinForms — Configuración del proyecto
+# Este archivo es administrado por el instalador. Para personalizaciones, edita config.user.toml
+
+[project]
+name = "FbsCliente"
+version = "1.0.0"
+
+[user]
+name = "Tomas"
+chat_language = "es"
+doc_language = "es"
+
+[output]
+folder = "_ais_sdd"
+
+[agents]
+installed = [
+  "ais-agente-front-winforms",
+  "ais-inventariador-winforms",
+  "ais-analista-codigo",
+  "ais-analista-reglas-negocio",
+  "ais-arquitecto-sistema",
+  "ais-redactor-especificaciones",
+  "ais-especificador-cambios-front",
+  "ais-planificador-implementacion-front",
+  "ais-actualizador-contexto-front",
+  "ais-revisor-especificaciones",
+  "ais-documentador-ui",
+  "ais-extractor-forms-winforms",
+  "ais-mapeador-proxy-rest",
+  "ais-data-master",
+  "ais-design-system",
+  "ais-agents-help",
+  "ais-normalizador-estandares-front",
+  "ais-evaluador-calidad-specs-front",
+  "ais-trazador-cambios",
+  "ais-detector-deriva",
+  "ais-sincronizador-tickets",
+  "ais-generador-tests-front"
+]
+
+[engines]
+installed = [
+  "claude-code",
+  "cursor",
+  "windsurf",
+  "antigravity"
+]
+
+[analysis]
+answer_mode = "chat"
+doc_level = "completo"

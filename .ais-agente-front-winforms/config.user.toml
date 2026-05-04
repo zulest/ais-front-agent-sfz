@@ -1,0 +1,8 @@
+# AIS Agente Front WinForms — Configuraciones personales
+# Este archivo es para tus personalizaciones. NO hagas commit de este archivo.
+# Agrega .ais-agente-front-winforms/config.user.toml a tu .gitignore personal.
+
+# Exemplo de override:
+# [user]
+# name = "Seu Nome"
+# chat_language = "pt-br"
