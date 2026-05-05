@@ -63,3 +63,41 @@ describe('agent identity', () => {
     });
   }
 });
+
+describe('graphify integration', () => {
+  const GRAPHIFY_AGENTS = [
+    'ais-agente-front-winforms',
+    'ais-especificador-cambios-front',
+    'ais-planificador-implementacion-front',
+    'ais-actualizador-contexto-front',
+    'ais-detector-deriva',
+  ];
+
+  for (const agent of GRAPHIFY_AGENTS) {
+    it(`${agent} contains sfz-knowledge block`, () => {
+      const skillPath = join(AGENTS_DIR, agent, 'SKILL.md');
+      const content = readFileSync(skillPath, 'utf8');
+      expect(content).toContain('sfz-knowledge');
+      expect(content).toContain('query_graph');
+    });
+  }
+
+  it('ais-agente-front-winforms contains graphify setup instructions', () => {
+    const skillPath = join(AGENTS_DIR, 'ais-agente-front-winforms', 'SKILL.md');
+    const content = readFileSync(skillPath, 'utf8');
+    expect(content).toContain('graphify.serve');
+    expect(content).toContain('/graphify _ais_sdd/');
+  });
+
+  it('ais-actualizador-contexto-front mentions graphify --update', () => {
+    const skillPath = join(AGENTS_DIR, 'ais-actualizador-contexto-front', 'SKILL.md');
+    const content = readFileSync(skillPath, 'utf8');
+    expect(content).toContain('--update');
+  });
+
+  it('ais-detector-deriva mentions god_nodes', () => {
+    const skillPath = join(AGENTS_DIR, 'ais-detector-deriva', 'SKILL.md');
+    const content = readFileSync(skillPath, 'utf8');
+    expect(content).toContain('god_nodes');
+  });
+});
