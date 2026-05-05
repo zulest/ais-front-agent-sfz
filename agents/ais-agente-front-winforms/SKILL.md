@@ -125,6 +125,25 @@ Guardá `doc_level` en `state.json`. Continuá con el Analista de Código.
 - Redactor de Especificaciones
 - Revisor de Especificaciones (opcional)
 
+**Cierre del Modo Inicial — Knowledge Graph de los agentes:**
+
+Una vez que el Redactor de Especificaciones terminó de generar la documentación en `_ais_sdd/`, informá:
+
+> "[Nombre], la base de conocimiento inicial está completa en `_ais_sdd/`.
+>
+> **Siguiente paso — configurar sfz-knowledge (backend de los agentes):**
+> 1. Corré `/graphify _ais_sdd/` en Claude Code para construir el grafo navegable
+> 2. Agregá al `claude_desktop_config.json`:
+>    ```json
+>    "sfz-knowledge": {
+>      "command": "python",
+>      "args": ["-m", "graphify.serve", "<ruta-absoluta>/_ais_sdd/graphify-out/graph.json"]
+>    }
+>    ```
+> 3. Reiniciá Claude Desktop para activar sfz-knowledge
+>
+> Los agentes del Modo Cambio usarán `query_graph` de sfz-knowledge para analizar impacto y dependencias sin releer todos los docs. Cuando esté listo, escribí `/sfz-front` para continuar."
+
 ---
 
 ## MODO CAMBIO — Desarrollo activo
