@@ -70,7 +70,18 @@ Usando el contexto SFZ, determiná:
 
 Si no podés determinar la ruta exacta, indicá el módulo y pedí confirmación antes de continuar.
 
-### Paso 3 — Consultar la base de conocimiento existente
+### Paso 3 — Consultar la base de conocimiento
+
+**Primero — sfz-knowledge graph:**
+
+Intentá llamar `query_graph "<funcionalidad-afectada>"` (MCP tool de sfz-knowledge).
+- Si responde → usá los nodos y conexiones retornadas como contexto principal del impacto.
+  Complementá con `get_node "<id>"` para detalles de un nodo específico.
+  Pasá directamente a Paso 4 con este contexto.
+- Si no responde → continuá con la lectura directa de docs. Notificá:
+  "sfz-knowledge MCP no configurado — operando sin knowledge graph."
+
+**Fallback — Lectura directa de docs:**
 
 Lee (si existen):
 - `_ais_sdd/code-analysis.md` — análisis del Presentador afectado
