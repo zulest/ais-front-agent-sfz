@@ -140,9 +140,9 @@ Una vez que el Redactor de Especificaciones terminó de generar la documentació
 >      "args": ["-m", "graphify.serve", "<ruta-absoluta>/_ais_sdd/graphify-out/graph.json"]
 >    }
 >    ```
-> 3. Reiniciá Claude Desktop para activar sfz-knowledge
+> 3. Reiniciá Claude Desktop para activar sfz-knowledge (expone la herramienta `query_graph`)
 >
-> Los agentes del Modo Cambio usarán `query_graph` de sfz-knowledge para analizar impacto y dependencias sin releer todos los docs. Cuando esté listo, escribí `/sfz-front` para continuar."
+> Los agentes del Modo Cambio consultarán este grafo automáticamente para analizar impacto y dependencias sin releer todos los docs. Cuando esté listo, escribí `/sfz-front` para continuar."
 
 ---
 
