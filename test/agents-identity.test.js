@@ -92,7 +92,7 @@ describe('graphify integration', () => {
   it('ais-actualizador-contexto-front mentions graphify --update', () => {
     const skillPath = join(AGENTS_DIR, 'ais-actualizador-contexto-front', 'SKILL.md');
     const content = readFileSync(skillPath, 'utf8');
-    expect(content).toContain('--update');
+    expect(content).toContain('graphify _ais_sdd/ --update');
   });
 
   it('ais-detector-deriva mentions god_nodes', () => {
