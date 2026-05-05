@@ -90,34 +90,15 @@ Agregar sección al final del output post-install:
 
 ---
 
-### PRÓXIMO — S3 para estado compartido
+### PRÓXIMO — ~~S3 para estado compartido~~ CANCELADO
 
-Mover el estado del proyecto de local a S3. Útil **sin Hermes** — múltiples devs del mismo proyecto comparten estado sin pisarse.
+**Decisión (2026-05-04):** La fase PRÓXIMO fue evaluada y descartada.
 
-**Estructura S3:**
+**Por qué:** Cualquier esquema de S3 con credenciales en el cliente da al developer acceso directo al bucket. Ninguna combinación de env vars, config.toml, o tokens temporales resuelve el problema de fondo: si el developer tiene credenciales AWS, puede acceder a `_ais_sdd/` directamente.
 
-```
-s3://ais-servicio/
-  {cliente-id}/
-    {proyecto-id}/
-      state.json
-      config.toml
-      plan.md
-      audit/
-      last-sync.json
-      sdd/
-        *.md
-      graphify-out/
-        graph.json
-        GRAPH_REPORT.md
-      health.md
-```
+**La solución correcta es ir directo a DESPUÉS:** con el MCP thin-client instalado en la máquina del developer, los agentes corren en Hermes y el developer nunca recibe credenciales de almacenamiento. La privacidad se resuelve arquitectónicamente, no por convención.
 
-**Lo que hay que construir:**
-
-1. Adaptar escritura de outputs a S3 — hoy el CLI usa `fs` de Node. Cambiar a AWS SDK S3 con fallback local si no hay credenciales configuradas.
-2. Sincronizar `graphify-out/graph.json` a S3 post-update.
-3. Definir estructura de credenciales por cliente (env vars o config.toml).
+El estado compartido del proyecto (specs, knowledge graph, audit) vive en el backend de Hermes — accesible solo a través de los agentes.
 
 ---
 
