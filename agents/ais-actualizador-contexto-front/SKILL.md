@@ -110,6 +110,18 @@ Actualizá en `.ais-agente-front-winforms/state.json`:
 > [Si hay drift]: ⚠️ [N] divergencias registradas en `_ais_sdd/drift-log.md` — revisalas cuando puedas.
 > [Si no hay drift]: ✅ Sin divergencias detectadas."
 
+### Paso 5 — Sincronizar el knowledge graph
+
+Intentá llamar `query_graph "last_sync"` (MCP tool de sfz-knowledge) para verificar si el graph tiene los nodos actualizados.
+- Si responde → comparás los nodos con los archivos sincronizados en este paso.
+- Si no responde → ignorá este paso. Notificá: "sfz-knowledge MCP no configurado — operando sin knowledge graph."
+
+Después del resumen, informá:
+
+> "Para mantener el knowledge graph de los agentes sincronizado con los cambios aplicados:
+> Corré `/graphify _ais_sdd/ --update` en Claude Code.
+> Esto actualiza sfz-knowledge incrementalmente — solo re-extrae los docs modificados."
+
 ## Escala de confianza
 🟢 **CONFIRMADO** | 🟡 **INFERIDO** | 🔴 **REQUIERE_REVISION**
 
